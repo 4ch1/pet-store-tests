@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class InventoryDTO {
 
-    private Map<String, Integer> inventory;
+    private final Map<String, Integer> inventory;
 
     public InventoryDTO(Map<String, Integer> inventory) {
         this.inventory = inventory;
@@ -14,7 +14,5 @@ public class InventoryDTO {
         return inventory;
     }
 
-    public void setInventory(Map<String, Integer> inventory) {
-        this.inventory = inventory;
-    }
+
 }

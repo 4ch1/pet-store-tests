@@ -19,7 +19,7 @@ public class InventoryTests {
     private InventoryApi inventoryApi;
 
     @BeforeClass
-    public void setUpPage() {
+    public void setUpApi() {
         headersProperties = new Properties();
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("headers.properties")) {
             if (input == null) {
