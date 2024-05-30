@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Java testing project is designed to ensure the reliability and functionality of our application through a series of unit and integration tests. The project is structured to support different environments, allowing you to test the application under various configurations.
+This Java testing project is designed to ensure the reliability and functionality of our application through a series of tests. The project is structured to support different environments, allowing you to test the application under various configurations.
 
 ## Project Structure
 
