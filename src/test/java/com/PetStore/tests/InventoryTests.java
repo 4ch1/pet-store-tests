@@ -1,8 +1,9 @@
 package com.PetStore.tests;
 
-import com.PetStore.pageObjects.InventoryPage;
+import com.PetStore.pageObjects.InventoryApi;
 import com.PetStore.dto.InventoryDTO;
 import com.PetStore.utils.ApiClient;
+import com.PetStore.utils.TestUtils;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -15,7 +16,7 @@ import java.util.Properties;
 
 public class InventoryTests {
     private Properties headersProperties;
-    private InventoryPage inventoryPage;
+    private InventoryApi inventoryApi;
 
     @BeforeClass
     public void setUpPage() {
@@ -29,28 +30,22 @@ public class InventoryTests {
             throw new RuntimeException("Failed to load headers.properties", e);
         }
         Response response = ApiClient.getInventory();
-        inventoryPage = new InventoryPage(response);
+        inventoryApi = new InventoryApi(response);
     }
 
     @Test
     public void testStatusCode() {
-        Assert.assertEquals(inventoryPage.getStatusCode(), 200, "Status code is not 200");
+        Assert.assertEquals(inventoryApi.getStatusCode(), 200, "Status code is not 200");
     }
 
     @Test
     public void testResponseHeaders() {
-        // Validate response headers
-        Assert.assertEquals(inventoryPage.getHeader("access-control-allow-headers"), headersProperties.getProperty("access-control-allow-headers"), "access-control-allow-headers header value is incorrect");
-        Assert.assertEquals(inventoryPage.getHeader("access-control-allow-methods"), headersProperties.getProperty("access-control-allow-methods"), "access-control-allow-methods header value is incorrect");
-        Assert.assertEquals(inventoryPage.getHeader("access-control-allow-origin"), headersProperties.getProperty("access-control-allow-origin"), "access-control-allow-origin header value is incorrect");
-        Assert.assertEquals(inventoryPage.getHeader("content-type"), headersProperties.getProperty("content-type"), "content-type header value is incorrect");
-        Assert.assertNotNull(inventoryPage.getHeader("date"), "Date header is missing");
-        Assert.assertTrue(inventoryPage.getHeader("server").startsWith(headersProperties.getProperty("server-prefix")), "Server header does not start with Jetty");
+        TestUtils.validateResponseHeaders(inventoryApi, headersProperties);
     }
 
     @Test
     public void testGetInventory() {
-        InventoryDTO inventoryDTO = inventoryPage.getInventoryDTO();
+        InventoryDTO inventoryDTO = inventoryApi.getInventoryDTO();
 
         Assert.assertNotNull(inventoryDTO);
 

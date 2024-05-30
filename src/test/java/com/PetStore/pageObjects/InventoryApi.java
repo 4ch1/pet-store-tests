@@ -5,11 +5,11 @@ import com.jayway.jsonpath.JsonPath;
 import com.PetStore.dto.InventoryDTO;
 import java.util.Map;
 
-public class InventoryPage {
+public class InventoryApi {
 
     private final Response response;
 
-    public InventoryPage(Response response) {
+    public InventoryApi(Response response) {
         this.response = response;
     }
 

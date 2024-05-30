@@ -1,16 +1,22 @@
 package com.PetStore.tests;
 
 import com.PetStore.dto.OrderDTO;
-import com.PetStore.pageObjects.OrderPage;
+import com.PetStore.pageObjects.InventoryApi;
+import com.PetStore.pageObjects.OrderApi;
 import com.PetStore.utils.ApiClient;
+import com.PetStore.utils.TestUtils;
 import io.restassured.response.Response;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderTests {
@@ -31,12 +37,11 @@ public class OrderTests {
         OrderDTO orderRequest = createRandomOrder();
 
         Response response = ApiClient.createOrder(orderRequest);
-        OrderPage orderPage = new OrderPage(response);
+        OrderApi orderApi = new OrderApi(response);
 
+        Assert.assertEquals(orderApi.getStatusCode(), 200, "Status code is not 200");
 
-        Assert.assertEquals(orderPage.getStatusCode(), 200, "Status code is not 200");
-
-        OrderDTO orderResponse = orderPage.getOrderResponse();
+        OrderDTO orderResponse = orderApi.getOrderResponse();
 
         // Validate the response body
         Assert.assertNotNull(orderResponse, "Order response is null");
@@ -60,7 +65,22 @@ public class OrderTests {
         Assert.assertEquals(orderResponse.getStatus(), orderRequest.getStatus(), "Status does not match");
         Assert.assertEquals(orderResponse.isComplete(), orderRequest.isComplete(), "Complete status does not match");
     }
+    @Test
+    public void testCreateEmptyOrder() {
 
+        Response response = ApiClient.createOrder();
+
+        OrderApi orderApi = new OrderApi(response);
+
+
+        Assert.assertEquals(response.getStatusCode(), 400, "Status code is not 400");
+
+        OrderDTO orderResponse = orderApi.getOrderResponse();
+        Assert.assertEquals(1, orderResponse.getCode());
+        Assert.assertEquals("error", orderResponse.getType());
+        Assert.assertEquals("No data", orderResponse.getMessage());
+
+    }
     @Test
     public void testGetOrderById() {
         OrderDTO orderRequest = createRandomOrder();

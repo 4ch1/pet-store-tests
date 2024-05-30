@@ -5,14 +5,13 @@ import com.PetStore.dto.OrderDTO;
 import io.restassured.response.Response;
 
 
-public class OrderPage {
+public class OrderApi {
 
     private final Response response;
 
-    public OrderPage(Response response) {
+    public OrderApi(Response response) {
         this.response = response;
     }
-
     public int getStatusCode() {
         return response.getStatusCode();
     }

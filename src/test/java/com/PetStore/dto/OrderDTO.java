@@ -14,7 +14,6 @@ public class OrderDTO {
     private String type;
     private boolean complete;
 
-    // Getters and Setters
     public long getId() {
         return id;
     }

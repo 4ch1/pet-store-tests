@@ -10,10 +10,10 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class ApiClient {
-    private static String BASE_URL;
+    private static final String BASE_URL;
 
     static {
-        String env = System.getProperty("env");
+        String env = System.getProperty("env", "dev");
         if (env == null || env.isEmpty()) {
             throw new RuntimeException("Environment property 'env' is not specified. Please set it using -Denv=<environment>");
         }
@@ -39,6 +39,12 @@ public class ApiClient {
                 .given()
                 .contentType(ContentType.JSON)
                 .body(order)
+                .post(BASE_URL + "/store/order");
+    }
+    public static Response createOrder() {
+        return RestAssured
+                .given()
+                .contentType(ContentType.JSON)
                 .post(BASE_URL + "/store/order");
     }
 
